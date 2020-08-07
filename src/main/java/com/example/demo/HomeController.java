@@ -4,21 +4,32 @@ package com.example.demo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
 public class HomeController {
     @Autowired
-    UserRepository userRepository;
+    BookRepository bookRepository;
+
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    CategoryRepository categoryRepository;
+
     @RequestMapping("/")
+    public String home(Model model) {
+        model.addAttribute("categories", categoryRepository.findAll());
+        return "home";
+    }
+
+    @RequestMapping("/index")
     public String index() {
+
         return "index";
     }
 
@@ -27,44 +38,33 @@ public class HomeController {
         return "login";
     }
 
-    @RequestMapping("/logout")
-    public String logout(){
-        return "redirect:/login?logout=true";
-    }
-
-
-
     @RequestMapping("/admin")
     public String admin() {
+
         return "admin";
     }
 
-    @RequestMapping("/secure")
-    public String secure(Principal principal, Model model){
-        String username = principal.getName();
-        User user = userRepository.findByUsername(username);
-        model.addAttribute("user", user);
-        return "secure";
+    @RequestMapping("/showCategory/{id}")
+    public String showcat(@PathVariable("id") Long id, Model model){
+        model.addAttribute("category", categoryRepository.findById(id).get());
+        return "showcat";
     }
-    @RequestMapping("/register")
-    public String register(Model model){
-        model.addAttribute("user", new User());
-        return "/register";
-
-    }
-    @PostMapping("/register")
-    public String processregister(@ModelAttribute("user")User user,Model model){
-        model.addAttribute("user",user);
-        model.addAttribute("message","New User account Created");
-        user.setEnabled(true);
-        userRepository.save(user);
-        Role role=new Role(user.getUsername(), "ROLE_USER");
-        roleRepository.save(role);
-        return "index";
-
-
+    @PostMapping("/processBook")
+    public String processBook(@ModelAttribute Book book) {
+        bookRepository.save(book);
+        return "redirect:/";
     }
 
-
+    @RequestMapping("/updateBook/{id}")
+    public String updateBook(@PathVariable("id") long id, Model model){
+        Book book = bookRepository.findById(id).get();
+        model.addAttribute("book", book);
+        model.addAttribute("categories", categoryRepository.findAll());
+        return "newBook";
+    }
 
 }
+
+
+
+

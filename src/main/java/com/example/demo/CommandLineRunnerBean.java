@@ -13,7 +13,17 @@ public class CommandLineRunnerBean  implements CommandLineRunner {
     @Autowired
     RoleRepository roleRepository;
 
-    public void run(String ... args){
+    @Autowired
+    BookRepository bookRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
+
+
+
+
+
+        public void run(String ... args){
         User user = new User("bart","bart@gmail.com","bart","bart","Simpson",true);
         Role userRole = new Role("bart", "ROLE_USER");
         userRepository.save(user);
