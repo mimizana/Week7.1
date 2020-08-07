@@ -29,9 +29,7 @@
                 <li class="nav-item">
                     <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-link" th:href="@{/admin}">Admin</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/secure}">Personal Info</a>
-                </li>
+
                 <li class="nav-item">
                     <a sec:authorize="isAuthenticated()" class="nav-link" th:href="@{/logout}">Logout</a>
                 </li>

@@ -29,12 +29,12 @@ public class DataLoader implements CommandLineRunner {
         categoryRepository.save(category2);
 
 
-        Book book = new Book("The Hobbit and The Lord of the Rings", "J.R.R. Tolkien's", 3, true);
+        Book book = new Book("The Hobbit and The Lord of the Rings", "J.R.R. Tolkien's", 3, true, "image");
 
         book.setCategory(category);
         bookRepository.save(book);
 
-        Book book2 = new Book("The Hobbit and The Lord of the Rings", "J.R.R. Tolkien's", 3, true);
+        Book book2 = new Book("The Girl with th Dragon Tatoo", "Stieg Larsson", 2, true,"image");
 
         book2.setCategory(category);
         bookRepository.save(book);

@@ -16,7 +16,7 @@
     <tr th:each="category : ${categories}">
         <td>[[${category.title}]]</td>
 
-        <td><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/updateDepart/{id}(id=${category.id})}">Update</a></td>
+       // <td><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/updateCategory/{id}(id=${category.id})}">Update</a></td>
         <td><a sec:authorize="isAuthenticated()" th:href="@{/showCategory/{id}(id=${category.id})}">Show</a></td>
     </tr>
     </tbody>

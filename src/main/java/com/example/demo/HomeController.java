@@ -1,19 +1,25 @@
 package com.example.demo;
 
 
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
+import java.util.Map;
 
 @Controller
 public class HomeController {
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    CloudinaryConfig cloudc;
 
     @Autowired
     RoleRepository roleRepository;
@@ -62,7 +68,28 @@ public class HomeController {
         model.addAttribute("categories", categoryRepository.findAll());
         return "newBook";
     }
-
+    @GetMapping("/add")
+    public String newBook(Model model){
+        model.addAttribute("book",new Book());
+        return "newbook";
+    }
+    @PostMapping("/add")
+    public  String processBook(@ModelAttribute Book book,
+                                @RequestParam("file") MultipartFile file){
+        if(file.isEmpty()){
+            return "redirect:/add";
+        }
+        try{
+            Map uploadResult = cloudc.upload(file.getBytes(),
+                    ObjectUtils.asMap("resourcetype", "auto"));
+            book.setImage(uploadResult.get("url").toString());
+            bookRepository.save(book);
+        }catch (IOException e){
+            e.printStackTrace();
+            return "redirect:/add";
+        }
+        return "redirect:/";
+    }
 }
 
 

@@ -1,3 +1,5 @@
+
+
 package com.example.demo;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,6 +33,9 @@ public class Book {
 
     @Column (name="enabled")
     private boolean enabled;
+    @Column (name="image")
+    private String image;
+
 
 
     @ManyToOne
@@ -41,14 +46,16 @@ public class Book {
     }
 
     public Book(@Size(min = 3) String title,
-                    @NotEmpty String author,
-                    int quantity,
-                    boolean instock)
-                     {
+                @NotEmpty String author,
+                int quantity,
+                boolean instock,
+                String image)
+    {
         this.title = title;
         this.author = author;
         this.quantity = quantity;
         this.instock = true;
+        this.image = image;
 
     }
 
@@ -101,6 +108,14 @@ public class Book {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Category getCategory() {
